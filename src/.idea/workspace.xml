@@ -1,57 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22e26e6f-e76f-451c-929e-a9eff2f4f995" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/android.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0001.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0002.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0003.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0004.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0005.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0006.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0007.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0008.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0009.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0010.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0011.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0012.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0013.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0014.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0015.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0016.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0017.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0018.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0019.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0020.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0021.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0022.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0023.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0024.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0025.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0026.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0027.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0028.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0029.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0030.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0031.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0032.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0033.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0034.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0035.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0036.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0037.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0038.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0039.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0040.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0041.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0042.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0043.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0044.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0045.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0046.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dangerSign/0047.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="22e26e6f-e76f-451c-929e-a9eff2f4f995" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,7 +15,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
@@ -73,6 +23,16 @@
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/traffic_sign_recognition/kNN/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -96,6 +56,7 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/traffic_sign_recognition/neural_network/__init__.py" />
         <option value="$PROJECT_DIR$/traffic_sign_recognition/pca/__init__.py" />
+        <option value="$PROJECT_DIR$/traffic_sign_recognition/kNN/__init__.py" />
       </list>
     </option>
   </component>
@@ -461,6 +422,14 @@
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/traffic_sign_recognition/kNN/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
