@@ -45,7 +45,7 @@ model = baseline_model()
 
 # Fit the model
 model.fit(X_train, Y_train, validation_data=(X_test, Y_test), epochs=10, batch_size=200, verbose=2)
-model.save('mnist_simple_cnn.h5')
+model.save('traffic_signs_simple_cnn.h5')
 json_string = model.to_json()
 
 # Final evaluation of the model
