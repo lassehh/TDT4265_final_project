@@ -8,7 +8,7 @@ from keras import backend as K
 K.set_image_dim_ordering('th')
 
 
-# fix random seed for reproducibility
+# fix the random seed for reproducibility
 seed = 7
 np.random.seed(seed)
 
@@ -45,7 +45,7 @@ def baseline_model():
 model = baseline_model()
 
 # Fit the model
-model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=200, verbose=2)
+model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=200, verbose=1)
 model.save('mnist_simple_cnn.h5')
 json_string = model.to_json()
 
