@@ -1,6 +1,4 @@
 import numpy as np
-import os
-import skimage.transform
 import cv2
 import csv
 import matplotlib.pyplot as plt
@@ -21,19 +19,22 @@ def extract_features(images, feature):
         new_feature_vec = [color.rgb2hsv(image) for image in images]
         new_feature_vec = [np.array(f).astype(np.float32) / 255 for f in new_feature_vec]  # normalize
     elif feature == 'hog':
-        block_size = (16, 16)
-        block_stride = (8, 8)
+        block_size = (16, 16) #only supported option
+        block_stride = (8, 8)   #only supported option
         cell_size = block_stride
         num_bins = 9
         hog = cv2.HOGDescriptor((32,32), block_size, block_stride, cell_size, num_bins)
-        new_feature_vec = [hog.compute(image) for image in images]  # HOG-values are already normalized for each block (L2-norm)
+        new_feature_vec = [hog.compute(image) for image in images]  # already normalized (L2-norm) for each block
     elif feature == 'color_histogram':
-        hsv_images = [color.rgb2hsv(image) for image in images]
-        new_feature_vec = cv2.calcHist([hsv_images], [0, 1, 2], None, (8,8,8),
-                                       [0, 180, 0, 256, 0, 256])
-        cv2.normalize(new_feature_vec,new_feature_vec)
+        new_feature_vec = []
+        for image in images:
+            hsv= cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+            hist = cv2.calcHist([hsv], [0, 1, 2], None, (8,8,8), [0, 180, 0, 256, 0, 256])
+            new_feature_vec.append(cv2.normalize(hist,hist).flatten())
+        return new_feature_vec
     else:
         new_feature_vec = images
+
     new_feature_vec = [f.flatten() for f in new_feature_vec]
     feature_vec = [np.append(feature_vec[i],new_feature_vec[i]) for i in range(len(feature_vec))]
     return feature_vec
@@ -104,42 +105,6 @@ def load_data(rootpath, roi, feature):
 
 
     return training_features, training_labels, test_features, test_labels
-
-
-def load_testdata(rootpath, roi):
-    ''' Function for reading test data without labels 
-    
-    :param rootpath: path to current directory 
-    :param roi: boolean region of interest 
-    :return: numpy 3D array of raw pixel (or raw roi pixels) images from Final_Test
-    '''
-    images = []  # images
-    labels = []  # corresponding labels
-
-    prefix = rootpath + '/'
-    gt_file = open(prefix + 'GT-final_test' + '.csv')  # annotations file
-    gt_reader = csv.reader(gt_file, delimiter=';')  # csv parser for annotations file
-    gt_reader.__next__()  # skip header
-
-    # loop over all images in current annotations file
-    if roi:
-        for row in gt_reader:
-            image = plt.imread(prefix + row[0])  # the 1th column is the filename
-            roi_x1 = np.int(row[3])  # the 3rd column is roi upper left x
-            roi_y1 = np.int(row[4])  # the 4th column is roi upper left y
-            roi_x2 = np.int(row[5])  # the 5th column is roi lower right x
-            roi_y2 = np.int(row[6])  # the 5th column is roi lower right y
-            roi_image = image[roi_y1:roi_y2, roi_x1:roi_x2, :]  # extract the region of interest from image
-            images.append(roi_image)
-            labels.append(row[7])  # the 8th column is the label
-    else:
-        for row in gt_reader:
-            image = plt.imread(prefix+row[0])
-            labels.append(row[7])  # the 8th column is the label
-            images.append(image)
-
-    gt_file.close()
-    return images, labels
 
 def extract_hog_features(image):
     ''' This function implements hog feature extraction for one image. The function shows a step by step figure

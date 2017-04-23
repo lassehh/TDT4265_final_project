@@ -1,45 +1,11 @@
 from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
-import cv2
-from matplotlib.colors import ListedColormap
+from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
-from skimage.feature import hog
-from skimage import color, exposure
+import itertools
+import time
 
-
-
-def image_to_feature_vector(image, size =(32,32)):
-    ''' Resize the image to a fixed size (32x32), then flatten the image into
-        a list of raw pixel intensities
- 
-    :param image: image 
-    :return: single list of 32x32x3 numbers (flatten RGB pixel intensities)
-    '''
-    return cv2.resize(image, size).flatten()
-
-
-def extract_color_histogram(image, bins=(8,8,8)):
-
-    # extract a 3D color histogram from the HSV color space using
-    # the supplied number of `bins` per channel
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    hist = cv2.calcHist([hsv], [0, 1, 2], None, bins,
-                        [0, 180, 0, 256, 0, 256])
-    cv2.normalize(hist, hist)
-
-    # return the flattened histogram as the feature vector
-    return hist.flatten()
-
-
-def extract_hog_features(image):
-
-    image = color.rgb2grey(cv2.resize(image, (32,32)))
-    feature = hog(image,orientations=9, pixels_per_cell=(16, 16),
-                  cells_per_block=(1, 1),visualise=False)
-
-    return feature
-
-def classify(training_features, training_labels, test_features, test_labels, k ):
+def classify(training_features, training_labels, test_features, test_labels, k , feature):
     '''  '''
     # show information on the memory consumed by the feature sets:
     training = np.array(training_features)
@@ -49,106 +15,59 @@ def classify(training_features, training_labels, test_features, test_labels, k )
     print("[INFO] test_feature array consumes: {:.2f}MB".format(
         test.nbytes / (1024 * 1000.0)), "of memory.")
 
+    # train k-NN classifier
+    start_train_time = time.time()
+    model = KNeighborsClassifier(n_neighbors=k, n_jobs= -1)
+    model.fit(training_features, training_labels)
+    print('[INFO]create and fit k-NN classifier with k = ' + str(k) + ' and feature ' + feature + ' takes time: '+
+          str(time.time() - start_train_time) )
 
     print("[INFO] evaluating accuracy...")
-
-    # train k-NN classifier
-    model = KNeighborsClassifier(n_neighbors=k,
-                                 n_jobs= -1)
-    model.fit(training_features, training_labels)
-
-    #evaluate k-NN classifier
+    # evaluate k-NN classifier
+    start_eval_time = time.time()
     acc = model.score(test_features, test_labels)
     print("[INFO] histogram accuracy: {:.2f}%".format(acc * 100))
+    print('[INFO] predicting labels and calculating accuracy in test set with k-NN classifier where'
+          ' k = ' + str(k) + ' and feature ' + feature + ' takes time: ' + str(time.time() - start_eval_time))
 
+    start_prediction_time = time.time()
+    predicted = model.predict(test_features)
+    print('[INFO] predicting labels in test set with k-NN classifier where k = ' + str(k) + ' and feature ' +
+          feature + ' takes time: ' + str(time.time() - start_prediction_time))
 
-def kNN_classifier(images_training, labels_training, images_test, labels_test ):
-    '''
-    
-    :return: 
-    '''
+    # confusion matrix
+    con_matrix = confusion_matrix(test_labels, predicted)
+    np.set_printoptions(precision=2)
+    class_names = np.arange(0,43)
+    plt.figure()
+    plot_confusion_matrix(con_matrix, classes=class_names, title='Confusion matrix, without normalization')
+    plt.show()
 
-    # initialize the raw pixel intensities matrices, the features matrices, the hog matrices
-    # and labels list
-    raw_im_training = []
-    features_im_training = []
-    hog_im_training = []
-    raw_im_test = []
-    features_im_test = []
-    hog_im_test = []
+def plot_confusion_matrix(cm, classes, normalize=False, title = 'Confusion matrix' , cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
 
-    # loop over the input images
-    print("[INFO] extracting feature vectors and histogram from training set...")
-    for image in images_training:
-        # extract raw pixel intensity "features", followed by a color
-        # histogram to characterize the color distribution of the pixels
-        # in the image
-        pixels = image_to_feature_vector(image)
-        hist = extract_color_histogram(image)
-        hog = extract_hog_features(image)
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
 
-        # update the raw images, features, and labels matrices,
-        # respectively
-        raw_im_training.append(pixels)
-        features_im_training.append(hist)
-        hog_im_training.append(hog)
+    print(cm)
 
-    print("[INFO] extracting feature vectors and histogram from test set...")
-    for image in images_test:
-        # extract raw pixel intensity "features", followed by a color
-        # histogram to characterize the color distribution of the pixels
-        # in the image
-        pixels = image_to_feature_vector(image)
-        hist = extract_color_histogram(image)
-        hog = extract_hog_features(image)
-        # update the raw images, features, and labels matrices,
-        # respectively
-        raw_im_test.append(pixels)
-        features_im_test.append(hist)
-        hog_im_test.append(hog)
-
-    #show some information on the memory consumed by the raw images
-    # matrix and features matrix
-    raw_im_training = np.array(raw_im_training)
-    raw_im_test = np.array(raw_im_test)
-    #labels = np.array(labels)
-    print("[INFO] raw pixels training set matrix: {:.2f}MB".format(
-        raw_im_training.nbytes / (1024 * 1000.0)))
-    print("[INFO] raw pixel test set matrix: {:.2f}MB".format(
-       raw_im_test.nbytes / (1024 * 1000.0)))
-    #print("[INFO] color histogram training set matrix: {:.2f}MB".format(
-    #    raw_im_test.nbytes / (1024 * 1000.0)))
-    #print("[INFO] color histogram test set matrix: {:.2f}MB".format(
-    #    raw_im_test.nbytes / (1024 * 1000.0)))
-    #print("[INFO] raw pixel test set matrix: {:.2f}MB".format(
-    #    raw_im_test.nbytes / (1024 * 1000.0)))
-    #print("[INFO] raw pixel test set matrix: {:.2f}MB".format(
-    #    raw_im_test.nbytes / (1024 * 1000.0)))
-
-    # train and evaluate a k-NN classifer on the raw pixel intensities
-    for k in range (1,3):
-        print("[INFO:] k = ",k)
-        print("[INFO] evaluating accuracy...")
-        model = KNeighborsClassifier(n_neighbors=k,
-                                     n_jobs=-1)
-        model.fit(raw_im_training, labels_training)
-        acc = model.score(raw_im_test, labels_test)
-        print("[INFO] raw pixel accuracy: {:.2f}%".format(acc * 100))
-
-        # train and evaluate a k-NN classifier on the histogram
-        # representations
-        print("[INFO] evaluating histogram accuracy...")
-        model = KNeighborsClassifier(n_neighbors=k,
-                                     n_jobs=-1)
-        model.fit(features_im_training, labels_training)
-        acc = model.score(features_im_test, labels_test)
-        print("[INFO] histogram accuracy: {:.2f}%".format(acc * 100))
-
-        # train and evaluate a k-NN classifier on the hog
-        # representations
-        print("[INFO] evaluating histogram accuracy...")
-        model = KNeighborsClassifier(n_neighbors=k,
-                                    n_jobs=-1)
-        model.fit(hog_im_training, labels_training)
-        acc = model.score(hog_im_test, labels_test)
-        print("[INFO] histogram accuracy: {:.2f}%".format(acc * 100))
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, cm[i, j],
+                 horizontalalignment="center",
+                 color="white" if (cm[i, j] > thresh) | (cm[i,j]==0) else "black")
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
