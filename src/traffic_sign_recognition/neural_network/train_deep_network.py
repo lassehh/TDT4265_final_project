@@ -25,7 +25,8 @@ def model_trainer(convnet_models, batch_size = 100, modelname = 'random',
     Y_train = np_utils.to_categorical(Y_train)
     print('Done!')
 
-    # normalize the color channels and center the data cloud
+    # normalize the color channels over the entire data
+    #  and center the data cloud
     X_train /= 255
     X_test /= 255
     X_train -= np.mean(X_train, axis = 0)
@@ -39,16 +40,16 @@ def model_trainer(convnet_models, batch_size = 100, modelname = 'random',
         # use a ImageDataGenerator on the same in order to obtain more variety in data from
         # existing data
         training_datagen = ImageDataGenerator(
-            featurewise_center=True,
+            featurewise_center=False,
             samplewise_center=False,
-            featurewise_std_normalization=True,
+            featurewise_std_normalization=False,
             samplewise_std_normalization=False,
             zca_whitening=False,
             rotation_range=0.,
             width_shift_range=0.,
             height_shift_range=0.,
-            shear_range=0.,
-            zoom_range=0.2,
+            shear_range=0.1,
+            zoom_range=0,
             channel_shift_range=0.,
             fill_mode='nearest',
             cval=0.,
@@ -58,9 +59,9 @@ def model_trainer(convnet_models, batch_size = 100, modelname = 'random',
             preprocessing_function=None,)
 
         testing_datagen = ImageDataGenerator(
-            featurewise_center=True,
+            featurewise_center=False,
             samplewise_center=False,
-            featurewise_std_normalization=True,
+            featurewise_std_normalization=False,
             samplewise_std_normalization=False,
             zca_whitening=False,
             rotation_range=0.,
@@ -128,6 +129,6 @@ def model_trainer(convnet_models, batch_size = 100, modelname = 'random',
     plt.show()
     plt.savefig(modelname + '_loss.png')
 
-model_trainer(convnet_models.simple, modelname = 'simple_model',
-              epoches = 200, batch_size = 128, verbose = 2, generator = False)
+model_trainer(convnet_models.custom, modelname = 'custom_model',
+              epoches = 250, batch_size = 128, verbose = 2, generator = False)
 custom_cnn_model = load_model('saved_models/custom_model.h5')
