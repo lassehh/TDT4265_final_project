@@ -13,30 +13,30 @@ def extract_features(images, feature):
     feature_vec = [np.array([]) for image in images]
 
     if feature == 'grey':
-        new_feature_vec = [color.rgb2grey(image) for image in images]
-        new_feature_vec = [np.array(f).astype(np.float32)/255 for f in new_feature_vec] #normalize
+        temp_feature_vec = [color.rgb2grey(image) for image in images]
+        temp_feature_vec = [np.array(f).astype(np.float32)/255 for f in new_feature_vec] #normalize
     elif feature == 'hsv':
         new_feature_vec = [color.rgb2hsv(image) for image in images]
-        new_feature_vec = [np.array(f).astype(np.float32) / 255 for f in new_feature_vec]  # normalize
+        temp_feature_vec = [np.array(f).astype(np.float32) / 255 for f in new_feature_vec]  # normalize
     elif feature == 'hog':
         block_size = (16, 16) #only supported option
         block_stride = (8, 8)   #only supported option
         cell_size = block_stride
         num_bins = 9
         hog = cv2.HOGDescriptor((32,32), block_size, block_stride, cell_size, num_bins)
-        new_feature_vec = [hog.compute(image) for image in images]  # already normalized (L2-norm) for each block
+        temp_feature_vec = [hog.compute(image) for image in images]  # already normalized (L2-norm) for each block
     elif feature == 'color_histogram':
-        new_feature_vec = []
+        temp_feature_vec = []
         for image in images:
             hsv= cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
             hist = cv2.calcHist([hsv], [0, 1, 2], None, (8,8,8), [0, 180, 0, 256, 0, 256])
-            new_feature_vec.append(cv2.normalize(hist,hist).flatten())
-        return new_feature_vec
+            temp_feature_vec.append(cv2.normalize(hist,hist).flatten())
+        return temp_feature_vec
     else:
-        new_feature_vec = images
+        temp_feature_vec = images
 
-    new_feature_vec = [f.flatten() for f in new_feature_vec]
-    feature_vec = [np.append(feature_vec[i],new_feature_vec[i]) for i in range(len(feature_vec))]
+    temp_feature_vec = [f.flatten() for f in temp_feature_vec]
+    feature_vec = [np.append(feature_vec[i],temp_feature_vec[i]) for i in range(len(feature_vec))]
     return feature_vec
 
 
